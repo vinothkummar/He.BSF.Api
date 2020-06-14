@@ -13,6 +13,6 @@ namespace He.BSF.Infrastructure.Data
 
         public override string CollectionName { get; } = "DocumentItems";
         public override string GenerateId(DocumentItem entity) => $"{entity.Category}:{Guid.NewGuid()}";
-        public override PartitionKey ResolvePartitionKey(string entityId) => new PartitionKey(entityId.Split(':')[0]);
+        public override PartitionKey ResolvePartitionKey(string entityId) => new PartitionKey(entityId);
     }
 }
