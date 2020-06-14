@@ -13,6 +13,6 @@
         public ConnectionStringOptions Emulator { get; set; }
 
         public ConnectionStringOptions ActiveConnectionStringOptions =>
-            Mode == ConnectionStringMode.Emulator ? Azure : Emulator;
+            Mode == ConnectionStringMode.Azure ? Azure : Emulator;
     }
 }
