@@ -1,26 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Reflection;
-using System.Threading.Tasks;
 using He.BSF.Api.Extensions;
 using He.BSF.Api.Options;
+using He.BSF.Core.Interface;
 using He.BSF.Core.Interfaces;
 using He.BSF.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
-
+using System.Linq;
+using System.Text.Json;
 
 namespace He.BSF.Api
 {
@@ -63,9 +54,9 @@ namespace He.BSF.Api
             // Add CosmosDb. This verifies database and collections existence.
             services.AddCosmosDb(endpoint, authKey, databaseName, collectionNames);
 
-            services.AddCustomSwagger();
+            services.AddCustomSwagger();          
 
-            services.AddScoped<IDocumentItemRepository, DocumentItemRepository>();
+            services.AddScoped<IApplicantRepository, ApplicantRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
