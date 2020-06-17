@@ -21,16 +21,20 @@ namespace He.BSF.Infrastructure.Data
         }
 
         public async Task<T> GetByIdAsync(string id)
-        {
+        {           
             try
             {
                 var cosmosDbClient = _cosmosDbClientFactory.GetClient(CollectionName);
                 var document = await cosmosDbClient.ReadDocumentAsync(id, new RequestOptions
                 {
                     PartitionKey = ResolvePartitionKey(id)
-                });
+                });               
+                    
+                var result = JsonConvert.DeserializeObject<T>(document.ToString());
 
-                return JsonConvert.DeserializeObject<T>(document.ToString());
+                result.Etag = document.ETag;
+
+                return result;
             }
             catch (DocumentClientException e)
             {
@@ -68,7 +72,8 @@ namespace He.BSF.Infrastructure.Data
             try
             {
                 var cosmosDbClient = _cosmosDbClientFactory.GetClient(CollectionName);
-                await cosmosDbClient.ReplaceDocumentAsync(entity.Id, entity);
+                var ac = new AccessCondition {Condition = entity.Etag, Type = AccessConditionType.IfMatch };
+                await cosmosDbClient.ReplaceDocumentAsync(entity.Id, entity, new RequestOptions {AccessCondition = ac });
             }
             catch (DocumentClientException e)
             {
